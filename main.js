@@ -58,6 +58,7 @@ const windowMaker = () => {
 
 const handleCameraOpener = (e) => {
     if(cameraOpened) return;
+    cameraOpened = true;
     const window = windowMaker();
     let streams;
 
