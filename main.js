@@ -1,3 +1,5 @@
+let cameraOpened = false;
+
 document.addEventListener('DOMContentLoaded',(e) => {
     const camera = document.getElementById('camera');
 
@@ -17,6 +19,7 @@ const windowMaker = () => {
     closeBtn.textContent = 'X'
 
     closeBtn.addEventListener('click',(e) => {
+        cameraOpened = false;
         window.remove();
     })
 
@@ -54,8 +57,9 @@ const windowMaker = () => {
 }
 
 const handleCameraOpener = (e) => {
-
+    if(cameraOpened) return;
     const window = windowMaker();
+    let streams;
 
     if(navigator && navigator.mediaDevices){
         const options = {audio: false, video: { facingMode: "user"}};
@@ -63,6 +67,7 @@ const handleCameraOpener = (e) => {
         videoElem.className = 'w-full h-full scale-x-[-1]';
 
         navigator.mediaDevices.getUserMedia(options).then((stream) => {
+            streams = stream;
             videoElem.srcObject = stream;
             videoElem.onloadedmetadata = function(e) {
                 videoElem.play();
@@ -90,6 +95,13 @@ const handleCameraOpener = (e) => {
         errDiv.appendChild(text);
         window.appendChild(errDiv);
     }
+
+    const btn = window.querySelector('button');
+    btn.addEventListener('click',() => {
+        if (streams) {
+            streams.getTracks().forEach(track => track.stop());
+        }
+    })
     
     document.body.appendChild(window);
 }
