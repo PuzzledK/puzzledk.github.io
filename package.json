@@ -12,6 +12,6 @@
     "build": "vite build",
     "preview": "vite preview",
     "postbuild": "echo 'indra.smartfellas.net' > dist/CNAME",
-    "deploy": "bun run build && bun run postbuild && gh-pages -d dist"
+    "deploy": "gh-pages -d dist"
   }
 }
