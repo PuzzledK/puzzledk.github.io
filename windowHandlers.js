@@ -82,4 +82,10 @@ export const errWin = (windowEl,err) => {
     windowEl.appendChild(errDiv);
 }
 
+export const bringToFront = (stateManager,DOMState) => {
+    if(stateManager.window){
+        stateManager.window.style.zIndex = DOMState.zind++;
+    }
+}
+
 export default windowMaker;
