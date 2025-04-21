@@ -12,6 +12,8 @@ const changeWallPaper = (elem) => {
     const mainDiv = document.getElementById('mainDiv');
     DOMState.wallpaper = elem;
 
+    localStorage.setItem("wallpaper",elem);
+
     mainDiv.style.backgroundImage = `url(/assets/wallpapers/${DOMState.wallpaper})`;
 }
 
@@ -45,7 +47,10 @@ document.addEventListener('DOMContentLoaded',(e) => {
     const camera = document.getElementById('camera');
     const settings = document.getElementById('settings');
 
-    mainDiv.style.backgroundImage = `url(/assets/wallpapers/${DOMState.wallpaper})`;
+    let wallp = localStorage.getItem('wallpaper');
+    wallp = wallp ? wallp : "1.png";
+    DOMState.wallpaper = wallp;
+    mainDiv.style.backgroundImage = `url(/assets/wallpapers/${wallp})`;
 
     camera.addEventListener('click',handleCameraOpener);
     settings.addEventListener('click',handleSettingsOpener);
