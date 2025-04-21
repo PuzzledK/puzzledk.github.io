@@ -13,6 +13,7 @@
     "build": "vite build",
     "make-cname": "echo 'indra.smartfellas.net' > dist/CNAME",
     "delete-build": "rimraf dist",
-    "deploy": "bun run build && bun run make-cname && rimraf dist/.git && gh-pages -d dist"
+    "deploy": "bun run build && bun run make-cname && rimraf dist/.git && gh-pages --dist dist --dotfiles",
+    "postdeplot" : "rimraf dist"
   }
 }
