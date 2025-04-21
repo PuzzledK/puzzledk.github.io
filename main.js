@@ -15,6 +15,11 @@ const cameraState = {
     }
 };
 
+const settingState = {
+    opened : false,
+    window : null
+}
+
 document.addEventListener('DOMContentLoaded',(e) => {
     const camera = document.getElementById('camera');
     const settings = document.getElementById('settings');
@@ -54,3 +59,13 @@ const handleCameraOpener = (e) => {
     document.body.appendChild(windowEl);
 }
 
+const handleSettingsOpener = (e) => {
+    if(settingState.opened) return;
+
+    settingState.opened = true;
+
+    const windowEl = windowMaker("Settings",settingState);
+    settingState.window = windowEl;
+
+    document.body.appendChild(windowEl);
+}
