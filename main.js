@@ -8,53 +8,71 @@ document.addEventListener('DOMContentLoaded',(e) => {
 })
 
 const windowMaker = () => {
-    const window = document.createElement('div');
-    window.className = 'flex flex-col h-3/4 w-2/3 absolute left-40 top-10 bg-black';
+    const windowEl = document.createElement('div');
+    windowEl.className = 'flex flex-col h-[500px] w-[900px] absolute left-40 top-10 bg-black';
 
     const windowButtonsNav = document.createElement('div');
-    windowButtonsNav.className = 'flex h-[5%] justify-end w-full bg-gray-500 items-baseline px-2 items-center'
+    windowButtonsNav.className = 'flex h-[5%] justify-end w-full bg-gray-500 items-baseline px-2 items-center';
 
     const closeBtn = document.createElement('button');
-    closeBtn.className = 'w-[1.2rem] h-[1.2rem] flex items-center justify-center rounded-full bg-red-600 text-white hover:bg-red-700 transition'
-    closeBtn.textContent = 'X'
+    closeBtn.className = 'w-[1.2rem] h-[1.2rem] flex items-center justify-center rounded-full bg-red-600 text-white hover:bg-red-700 transition';
+    closeBtn.textContent = 'X';
 
-    closeBtn.addEventListener('click',(e) => {
+    closeBtn.addEventListener('click', (e) => {
         cameraOpened = false;
-        window.remove();
-    })
+        windowEl.remove();
+    });
 
     let dragging = false;
-    let offsetX,offsetY;
-    window.addEventListener('mousedown',(e) => {
-        dragging = true;
-        window.classList.add('cursor-grabbing')
+    let offsetX, offsetY;
 
-        offsetX = e.clientX - window.getBoundingClientRect().left;
-        offsetY = e.clientY - window.getBoundingClientRect().top;
-    })
+    windowButtonsNav.addEventListener('mousedown', (e) => {
+        dragging = true;
+        offsetX = e.clientX - windowEl.offsetLeft;
+        offsetY = e.clientY - windowEl.offsetTop;
+        windowButtonsNav.classList.remove('cursor-grab');
+        windowButtonsNav.classList.add('cursor-grabbing');
+        e.preventDefault(); // Prevent text selection
+    });
 
     document.addEventListener('mousemove', (e) => {
         if (!dragging) return;
-      
-        const newX = e.clientX - offsetX;
-        const newY = e.clientY - offsetY;
-      
-        window.style.left = newX + 'px';
-        window.style.top = newY + 'px';
-      });
+
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const windowRect = windowEl.getBoundingClientRect();
+
+        const sideNav = document.getElementById('sideNav');
+
+        const minX = sideNav.getBoundingClientRect().width;
+        const maxX = viewportWidth - windowRect.width;
+        const maxY = viewportHeight - windowRect.height;
+
+        let newX = e.clientX - offsetX;
+        let newY = e.clientY - offsetY;
+
+        // Clamp positions
+        newX = Math.max(minX, Math.min(newX, maxX));
+        newY = Math.max(0, Math.min(newY, maxY));
+
+        windowEl.style.position = 'absolute';
+        windowEl.style.left = newX + 'px';
+        windowEl.style.top = newY + 'px';
+    });
 
     document.addEventListener('mouseup', () => {
         if (!dragging) return;
-      
+
         dragging = false;
-        window.classList.remove('cursor-grabbing');
+        windowEl.classList.remove('cursor-grabbing');
     });
 
     windowButtonsNav.appendChild(closeBtn);
-    window.appendChild(windowButtonsNav);
+    windowEl.appendChild(windowButtonsNav);
 
-    return window;
-}
+    return windowEl;
+};
+
 
 const handleCameraOpener = (e) => {
     if(cameraOpened) return;
