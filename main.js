@@ -22,7 +22,12 @@ const cameraState = {
 
 const settingState = {
     opened : false,
-    window : null
+    window : null,
+
+    cleanup: function(){
+        this.opened = false;
+        this.window = null;
+    }
 }
 
 document.addEventListener('DOMContentLoaded',(e) => {
