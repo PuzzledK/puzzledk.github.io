@@ -1,4 +1,9 @@
 import windowMaker,{errWin} from "./windowMakers";
+let zind = 10;
+
+const bringToFront = (window) => {
+    window.style.zIndex = zind++;
+}
 
 const cameraState = {
     opened: false,
@@ -35,6 +40,10 @@ const handleCameraOpener = (e) => {
     const windowEl = windowMaker('Camera',cameraState);
     cameraState.window = windowEl;
 
+    windowEl.addEventListener('mousedown',()=>{
+        bringToFront(windowEl);
+    })
+
     if(navigator && navigator.mediaDevices){
         const options = {audio: false, video: { facingMode: "user"}};
         const videoElem = document.createElement('video');
@@ -67,5 +76,13 @@ const handleSettingsOpener = (e) => {
     const windowEl = windowMaker("Settings",settingState);
     settingState.window = windowEl;
 
+    windowEl.addEventListener('mousedown',()=>{
+        bringToFront(windowEl);
+    })
+
+    const restWindow = document.createElement('div');
+    restWindow.className = 'w-full h-full bg-white'
+
+    windowEl.appendChild(restWindow);
     document.body.appendChild(windowEl);
 }

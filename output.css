@@ -235,9 +235,6 @@
   .justify-center {
     justify-content: center;
   }
-  .justify-end {
-    justify-content: flex-end;
-  }
   .space-y-2 {
     :where(& > :not(:last-child)) {
       --tw-space-y-reverse: 0;
@@ -262,6 +259,9 @@
   }
   .bg-red-600 {
     background-color: var(--color-red-600);
+  }
+  .bg-white {
+    background-color: var(--color-white);
   }
   .bg-\[url\(\/assets\/bg\.png\)\] {
     background-image: url(/assets/bg.png);
