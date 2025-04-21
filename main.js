@@ -1,11 +1,19 @@
 import windowMaker,{errWin,bringToFront} from "./windowHandlers";
 
-let DOMState = {
+const DOMState = {
     zind : 100,
     wallpaper : '3.jpeg'
 }
 
-let settingsNavItems = ['Wallpaper','Temp Setting 1','Temp Setting 2'];
+const settingsNavItems = ['Wallpaper'];
+const wallPaperOptions = ['1.png','2.jpg','3.jpeg'];
+
+const changeWallPaper = (elem) => {
+    const mainDiv = document.getElementById('mainDiv');
+    DOMState.wallpaper = elem;
+
+    mainDiv.style.backgroundImage = `url(/assets/wallpapers/${DOMState.wallpaper})`;
+}
 
 const cameraState = {
     opened: false,
@@ -36,8 +44,6 @@ document.addEventListener('DOMContentLoaded',(e) => {
     const mainDiv = document.getElementById('mainDiv');
     const camera = document.getElementById('camera');
     const settings = document.getElementById('settings');
-
-    // mainDiv.classList.add(`bg-[url(/assets/wallpapers/${DOMState.wallpaper})]`);
 
     mainDiv.style.backgroundImage = `url(/assets/wallpapers/${DOMState.wallpaper})`;
 
@@ -96,17 +102,42 @@ const handleSettingsOpener = (e) => {
     restWindow.className = 'w-full h-full bg-white flex';
 
     const sideNav = document.createElement('div');
-    sideNav.className = 'flex flex-col h-full relative space-y-2 border-r-2 border-r-black shadow-2xl shadow-gray-500 w-[15%] pt-2';
+    sideNav.className = 'flex flex-col items-center relative space-y-2 border-r-2 border-r-black shadow-2xl shadow-gray-500 w-[15%] pt-2';
 
     settingsNavItems.map((elem) => {
-        const wallPaperElem = document.createElement('div');
-        wallPaperElem.className = 'flex flex-row items-center space-x-1 border-b-2 border-b-black w-full text-center';
-        wallPaperElem.textContent = elem;
+        const wallPaperElemTxt = document.createElement('p');
+        wallPaperElemTxt.textContent = elem;
 
-        sideNav.appendChild(wallPaperElem);
+        const wallPaperBorder = document.createElement('div')
+        wallPaperBorder.className = 'border-b-2 border-b-black w-full shadow-2xl';
+        
+        sideNav.appendChild(wallPaperElemTxt);
+        sideNav.appendChild(wallPaperBorder);
+    });
+
+    const settingContent = document.createElement('div');
+    settingContent.className = 'flex flex-row flex-wrap w-full items-center justify-center space-x-5';
+
+    wallPaperOptions.map((elem) => {
+        const imgDiv = document.createElement('div');
+        const img = document.createElement('img');
+
+        img.className = 'w-[175px] h-[175px]';
+        img.src = `/assets/wallpapers/${elem}`;
+
+        imgDiv.appendChild(img);
+        settingContent.appendChild(imgDiv);
+
+        imgDiv.addEventListener('click' ,(e) => {
+            e.preventDefault();
+
+            changeWallPaper(elem);
+        })
+
     })
     
     restWindow.appendChild(sideNav);
+    restWindow.appendChild(settingContent);
 
     windowEl.appendChild(restWindow);
     document.body.appendChild(windowEl);
