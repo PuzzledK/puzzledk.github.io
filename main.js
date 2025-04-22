@@ -2,7 +2,7 @@ import windowMaker,{errWin,bringToFront} from "./windowHandlers";
 
 const DOMState = {
     zind : 100,
-    wallpaper : '3.jpeg'
+    wallpaper : ''
 }
 
 const settingsNavItems = ['Wallpaper'];
@@ -42,10 +42,22 @@ const settingState = {
     }
 }
 
+const resumeState = {
+    opened : false,
+    window : null,
+
+    cleanup: function(){
+        this.opened = false;
+        this.window = null;
+    }
+}
+
 document.addEventListener('DOMContentLoaded',(e) => {
     const mainDiv = document.getElementById('mainDiv');
     const camera = document.getElementById('camera');
     const settings = document.getElementById('settings');
+
+    const resume = document.getElementById('resumeIcon');
 
     let wallp = localStorage.getItem('wallpaper');
     wallp = wallp ? wallp : "1.png";
@@ -54,8 +66,31 @@ document.addEventListener('DOMContentLoaded',(e) => {
 
     camera.addEventListener('click',handleCameraOpener);
     settings.addEventListener('click',handleSettingsOpener);
+    resume.addEventListener('click',handleResumeOpener);
 
 })
+
+const handleResumeOpener = (e) => {
+    if(resumeState.opened) return;
+    resumeState.opened = true;
+
+    const windowEl = windowMaker('Resume',resumeState);
+    resumeState.window = windowEl;
+
+    const imgDiv = document.createElement('div');
+    imgDiv.className = 'w-full h-full bg-white overflow-scroll px-14';
+
+    const img = document.createElement('img');
+    img.src = '/assets/resume.svg';
+
+    windowEl.addEventListener('mousedown',() => {
+        bringToFront(resumeState,DOMState);
+    })
+
+    imgDiv.appendChild(img);
+    windowEl.appendChild(imgDiv);
+    document.body.appendChild(windowEl);
+}
 
 const handleCameraOpener = (e) => {
     if(cameraState.opened) return;
@@ -121,19 +156,18 @@ const handleSettingsOpener = (e) => {
     });
 
     const settingContent = document.createElement('div');
-    settingContent.className = 'flex flex-row flex-wrap w-full items-center justify-center space-x-5';
+    settingContent.id = 'setting-content';
+    settingContent.className = 'flex flex-row flex-wrap w-full justify-center space-x-5 pt-5';
 
     wallPaperOptions.map((elem) => {
-        const imgDiv = document.createElement('div');
         const img = document.createElement('img');
 
-        img.className = 'w-[175px] h-[175px]';
+        img.className = 'w-[150px] h-[150px] border-4 border-black';
         img.src = `/assets/wallpapers/${elem}`;
 
-        imgDiv.appendChild(img);
-        settingContent.appendChild(imgDiv);
+        settingContent.appendChild(img);
 
-        imgDiv.addEventListener('click' ,(e) => {
+        img.addEventListener('click' ,(e) => {
             e.preventDefault();
 
             changeWallPaper(elem);

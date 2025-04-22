@@ -3,7 +3,7 @@ const windowMaker = (windowName,stateManager) => {
     windowEl.className = 'flex flex-col h-[500px] w-[900px] absolute left-40 top-10 bg-black';
 
     const windowButtonsNav = document.createElement('div');
-    windowButtonsNav.className = 'flex h-[5%] justify-between w-full bg-gray-500 items-baseline px-2 items-center';
+    windowButtonsNav.className = 'flex h-[5%] justify-between w-full bg-black items-baseline px-2 items-center';
 
     const navText = document.createElement('p');
     navText.textContent = windowName;
@@ -14,10 +14,15 @@ const windowMaker = (windowName,stateManager) => {
     closeBtn.textContent = 'X';
 
     closeBtn.addEventListener('click', (e) => {
-        windowEl.remove();
-        if (stateManager && stateManager.cleanup) {
-            stateManager.cleanup();
-        }
+        windowEl.classList.add('out');
+
+        windowEl.addEventListener('animationend',() => {
+            windowEl.remove();
+            if (stateManager && stateManager.cleanup) {
+                stateManager.cleanup();
+            }
+        })
+        
     });
 
     let dragging = false;
