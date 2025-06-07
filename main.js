@@ -27,6 +27,7 @@ const cameraState = {
             this.stream.getTracks().forEach(track => track.stop());
             this.stream = null;
         }
+
         this.opened = false;
         this.window = null;
     }
@@ -35,8 +36,10 @@ const cameraState = {
 const settingState = {
     opened : false,
     window : null,
+    
 
     cleanup: function(){
+
         this.opened = false;
         this.window = null;
     }
@@ -47,8 +50,52 @@ const resumeState = {
     window : null,
 
     cleanup: function(){
+
         this.opened = false;
         this.window = null;
+    }
+}
+
+const terminalState = {
+    opened : false,
+    window : null,
+    inputElem : null,
+
+    cleanup: function(){
+        this.opened = false;
+        this.window = null;
+        this.inputElem = null;
+    }
+}
+
+let termHistory = {};
+
+const handleTerminalInput = (e,inputElement,outElement) => {
+    if(e.key == 'Enter'){
+
+        console.log("ENTER PRESSED");
+
+        const inpText = inputElement.querySelector('span');
+        const inp = inputElement.querySelector('input');
+
+        if(inp.value == '') return;
+
+        const outTemp = document.createElement('div');
+
+        const promptClone = inpText.cloneNode(true);
+        const textClone = document.createElement('span');
+        textClone.textContent = inp.value;
+
+        outTemp.appendChild(promptClone);
+        outTemp.appendChild(textClone);
+        outElement.appendChild(outTemp);
+
+        inp.value = '';
+        outElement.scrollTop = outElement.scrollHeight;
+
+    }
+    else{
+        return;
     }
 }
 
@@ -56,6 +103,7 @@ document.addEventListener('DOMContentLoaded',(e) => {
     const mainDiv = document.getElementById('mainDiv');
     const camera = document.getElementById('camera');
     const settings = document.getElementById('settings');
+    const terminal = document.getElementById('terminal');
 
     const resume = document.getElementById('resumeIcon');
 
@@ -64,11 +112,56 @@ document.addEventListener('DOMContentLoaded',(e) => {
     DOMState.wallpaper = wallp;
     mainDiv.style.backgroundImage = `url(/assets/wallpapers/${wallp})`;
 
+    // handleTerminalOpener();
+
     camera.addEventListener('click',handleCameraOpener);
     settings.addEventListener('click',handleSettingsOpener);
     resume.addEventListener('click',handleResumeOpener);
+    terminal.addEventListener('click',handleTerminalOpener);
 
 })
+
+const handleTerminalOpener = (e) => {
+    if(terminalState.opened) return;
+    terminalState.opened = true;
+
+    const windowEl = windowMaker('Terminal',terminalState);
+    terminalState.window = windowEl;
+
+    windowEl.addEventListener('mousedown',() => {
+        bringToFront(terminalState,DOMState);
+    })
+
+    const innerWindow = document.createElement('div');
+    innerWindow.className = 'w-full h-full px-1 bg-[rgba(255,255,255,1)] overflow-scroll';
+
+    const outputSection = document.createElement('div');
+    outputSection.className = 'flex flex-col space-x-2';
+
+    const inputSection = document.createElement('div');
+    inputSection.className = 'flex flex-row space-x-2';
+
+    const startText = document.createElement('span');
+    startText.innerText = 'root@webOS :  ';
+    startText.className = 'font-bold text-blue-500';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'text-black outline-0';
+
+    input.addEventListener('keydown',(e) => {
+        handleTerminalInput(e,inputSection,outputSection);
+    });
+
+    inputSection.appendChild(startText);
+    inputSection.appendChild(input);
+
+    innerWindow.appendChild(outputSection);
+    innerWindow.appendChild(inputSection);
+    windowEl.appendChild(innerWindow);
+
+    document.body.appendChild(windowEl);
+}
 
 const handleResumeOpener = (e) => {
     if(resumeState.opened) return;
