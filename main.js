@@ -36,6 +36,8 @@ const DOMState = {
   wallpaper: "",
 };
 
+var commandHistory = [];
+
 const settingsNavItems = ["Wallpaper"];
 const wallPaperOptions = ["1.png", "2.jpg", "3.jpeg"];
 
@@ -103,9 +105,10 @@ const commands = {
 };
 
 const handleTerminalInput = (e, inputElement, outElement) => {
+  const inpText = inputElement.querySelector("span");
+  const inp = inputElement.querySelector("input");
+
   if (e.key == "Enter") {
-    const inpText = inputElement.querySelector("span");
-    const inp = inputElement.querySelector("input");
 
     if (inp.value == "") return;
 
@@ -114,6 +117,7 @@ const handleTerminalInput = (e, inputElement, outElement) => {
     const promptClone = inpText.cloneNode(true);
     const textClone = document.createElement("span");
     textClone.textContent = inp.value;
+    textClone.style.color = 'white'
 
     outTemp.appendChild(promptClone);
     outTemp.appendChild(textClone);
@@ -126,18 +130,16 @@ const handleTerminalInput = (e, inputElement, outElement) => {
         tempSpan = document.createElement("span");
 
         const container = document.createElement("div");
-        container.style.display = "flex";
-        container.style.gap = "2rem";
-        container.style.alignItems = "flex-start";
+        container.className = 'flex gap-2 items-start'
 
         const logoCol = document.createElement("pre");
         logoCol.textContent = laptopLogo;
-        logoCol.style.margin = "0";
-        logoCol.style.color = "#E95420"; // Ubuntu orange
+
+        logoCol.className = 'm-0 text-[#E95420]'
 
         const infoCol = document.createElement("pre");
         infoCol.textContent = getSystemInfo().join("\n");
-        infoCol.style.margin = "0";
+        infoCol.className = 'm-0 py-20';
 
         container.appendChild(logoCol);
         container.appendChild(infoCol);
@@ -164,10 +166,18 @@ const handleTerminalInput = (e, inputElement, outElement) => {
         outElement.appendChild(tempSpan);
         break;
     }
-
+    commandHistory.push(inp.value);
     inp.value = "";
     outElement.scrollTop = outElement.scrollHeight;
-  } else {
+
+  } 
+  else if(e.key == 'ArrowUp') {
+    if(commandHistory.length == 0) return;
+    inp.value = commandHistory.at(-1);
+    commandHistory.pop();
+    commandHistory = [inp.value,...commandHistory];
+  }
+  else{
     return;
   }
 };
@@ -204,10 +214,10 @@ const handleTerminalOpener = (e) => {
 
   const innerWindow = document.createElement("div");
   innerWindow.className =
-    "w-full h-full px-1 bg-[rgba(255,255,255,1)] overflow-scroll";
+    "w-full h-full px-1 bg-black] overflow-y-scroll";
 
   const outputSection = document.createElement("div");
-  outputSection.className = "flex flex-col space-x-2";
+  outputSection.className = "flex flex-col space-x-2 text-white";
 
   const inputSection = document.createElement("div");
   inputSection.className = "flex flex-row space-x-2";
@@ -218,7 +228,7 @@ const handleTerminalOpener = (e) => {
 
   const input = document.createElement("input");
   input.type = "text";
-  input.className = "text-black outline-0";
+  input.className = "text-black outline-0 text-white";
 
   input.addEventListener("keydown", (e) => {
     handleTerminalInput(e, inputSection, outputSection);
