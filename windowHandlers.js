@@ -1,17 +1,37 @@
 const windowMaker = (windowName,stateManager) => {
     const windowEl = document.createElement('div');
-    windowEl.className = 'flex flex-col absolute left-10 top-5 bg-black shadow-lg rounded-lg w-[90vw] max-w-[900px] min-w-[280px] h-[60vh] max-h-[90vh] min-h-[200px]';
+    windowEl.className = [
+        'flex flex-col absolute left-2 top-2',
+        'bg-black shadow-lg rounded-lg',
+        'w-[96vw] max-w-[900px] min-w-[180px]',
+        'h-[70vh] max-h-[90vh] min-h-[180px]',
+        'sm:left-10 sm:top-5',
+        'sm:w-[90vw] sm:min-w-[280px] sm:h-[60vh] sm:min-h-[200px]'
+    ].join(' ');
 
     const windowButtonsNav = document.createElement('div');
-    windowButtonsNav.className = 'flex h-[44px] min-h-[44px] justify-between w-full bg-black items-center px-2';
+    windowButtonsNav.className = [
+        'flex justify-between items-center w-full',
+        'bg-black px-2',
+        'h-12 min-h-12',
+        'sm:h-[44px] sm:min-h-[44px]'
+    ].join(' ');
 
     const navText = document.createElement('p');
-    navText.className = 'truncate text-base sm:text-lg md:text-xl font-semibold';
+    navText.className = [
+        'truncate font-semibold',
+        'text-white',
+        'text-base sm:text-lg md:text-xl',
+        'flex-1 text-left'
+    ].join(' ');
     navText.textContent = windowName;
-    navText.style.color = 'white';
 
     const closeBtn = document.createElement('button');
-    closeBtn.className = 'w-8 h-8 flex items-center justify-center rounded-full bg-red-600 text-white hover:bg-red-700 transition text-base sm:text-lg';
+    closeBtn.className = [
+        'w-8 h-8 flex items-center justify-center rounded-full',
+        'bg-red-600 text-white hover:bg-red-700 transition',
+        'text-base sm:text-lg'
+    ].join(' ');
     closeBtn.textContent = 'X';
 
     closeBtn.addEventListener('click', (e) => {
@@ -71,7 +91,11 @@ const windowMaker = (windowName,stateManager) => {
     });
 
     const fullscreenBtn = document.createElement('button');
-    fullscreenBtn.className = 'w-8 h-8 flex items-center justify-center rounded-full bg-green-600 text-white hover:bg-green-700 transition ml-2 text-base sm:text-lg';
+    fullscreenBtn.className = [
+        'w-8 h-8 flex items-center justify-center rounded-full',
+        'bg-green-600 text-white hover:bg-green-700 transition ml-2',
+        'text-base sm:text-lg'
+    ].join(' ');
     fullscreenBtn.textContent = '⛶';
 
     let isFullscreen = false;
@@ -101,15 +125,19 @@ const windowMaker = (windowName,stateManager) => {
             windowEl.style.height = prevStyle.height || '60vh';
             windowEl.style.maxWidth = '900px';
             windowEl.style.maxHeight = '90vh';
-            windowEl.style.minWidth = '280px';
-            windowEl.style.minHeight = '200px';
+            windowEl.style.minWidth = '180px';
+            windowEl.style.minHeight = '180px';
             windowEl.style.zIndex = '';
             isFullscreen = false;
         }
     });
 
     const resizeHandle = document.createElement('div');
-    resizeHandle.className = 'absolute right-0 bottom-0 w-6 h-6 cursor-nwse-resize z-10';
+    resizeHandle.className = [
+        'absolute right-0 bottom-0 z-10',
+        'w-5 h-5 sm:w-6 sm:h-6',
+        'cursor-nwse-resize'
+    ].join(' ');
     resizeHandle.style.background = 'transparent';
 
     let resizing = false;
@@ -131,11 +159,11 @@ const windowMaker = (windowName,stateManager) => {
         const dy = e.clientY - startY;
         let newWidth = startWidth + dx;
         let newHeight = startHeight + dy;
-
+        
         const maxWidth = window.innerWidth * 0.98;
         const maxHeight = window.innerHeight * 0.95;
-        newWidth = Math.max(280, Math.min(newWidth, maxWidth));
-        newHeight = Math.max(200, Math.min(newHeight, maxHeight));
+        newWidth = Math.max(window.innerWidth * 0.2, Math.min(newWidth, maxWidth));
+        newHeight = Math.max(window.innerHeight * 0.2, Math.min(newHeight, maxHeight));
         windowEl.style.width = newWidth + 'px';
         windowEl.style.height = newHeight + 'px';
     });
@@ -148,7 +176,8 @@ const windowMaker = (windowName,stateManager) => {
     });
 
     const buttonGroup = document.createElement('div');
-    buttonGroup.className = 'flex gap-2 items-center';
+    // Button group stays right-aligned
+    buttonGroup.className = 'flex gap-2 items-center flex-shrink-0';
     buttonGroup.appendChild(fullscreenBtn);
     buttonGroup.appendChild(closeBtn);
 
