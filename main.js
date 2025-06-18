@@ -208,13 +208,14 @@ const handleTerminalOpener = (e) => {
   const windowEl = windowMaker("Terminal", terminalState);
   terminalState.window = windowEl;
 
+
   windowEl.addEventListener("mousedown", () => {
     bringToFront(terminalState, DOMState);
   });
 
   const innerWindow = document.createElement("div");
   innerWindow.className =
-    "w-full h-full px-1 bg-black] overflow-y-scroll";
+    "w-full h-full px-1 bg-black overflow-y-scroll";
 
   const outputSection = document.createElement("div");
   outputSection.className = "flex flex-col space-x-2 text-white";
