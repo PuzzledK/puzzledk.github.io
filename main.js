@@ -4,7 +4,7 @@ let evaluate;
 
 window.addEventListener("load", () => {
   Module.onRuntimeInitialized = () => {
-    evaluate = Module.cwrap("evaluate_expression", "number", ["string"]);
+    evaluate = Module.cwrap("evaluate_with_error", "number", ["string"]);
   };
 });
 
@@ -244,7 +244,7 @@ function handleCalcInput(e,inputElement,outElement) {
 
     } catch (e) {
         tempSpan = document.createElement("span");
-        tempSpan.textContent = `--> ${e}`
+        tempSpan.textContent = `--> Invalid Syntax or Unsupported Command / Function`
          
         tempSpan.className = "text-red-600 font-bold";
 

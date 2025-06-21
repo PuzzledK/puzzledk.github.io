@@ -231,6 +231,9 @@
   .flex {
     display: flex;
   }
+  .table {
+    display: table;
+  }
   .h-5 {
     height: calc(var(--spacing) * 5);
   }
