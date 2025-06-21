@@ -1,5 +1,13 @@
 import windowMaker, { errWin, bringToFront } from "./windowHandlers";
 
+let evaluate;
+
+window.addEventListener("load", () => {
+  Module.onRuntimeInitialized = () => {
+    evaluate = Module.cwrap("evaluate_expression", "number", ["string"]);
+  };
+});
+
 const laptopLogo = `
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡔⠒⠤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⣀⠤⠤⠤⠵⣄⠀⠈⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀
@@ -98,6 +106,16 @@ const terminalState = {
   },
 };
 
+const calcState = {
+  opened: false,
+  window: null,
+
+  cleanup: function () {
+    this.opened = false;
+    this.window = null;
+  },
+};
+
 const commands = {
   clear: "Clear the terminal",
   help: "Show list of available commands",
@@ -182,11 +200,68 @@ const handleTerminalInput = (e, inputElement, outElement) => {
   }
 };
 
+function handleCalcInput(e,inputElement,outElement) {
+  const inpText = inputElement.querySelector("span");
+  const inp = inputElement.querySelector("input");
+
+  if (e.key == "Enter") {
+
+    if (inp.value == "") return;
+
+    const outTemp = document.createElement("div");
+    const promptClone = inpText.cloneNode(true);
+    const textClone = document.createElement("span");
+    textClone.textContent = inp.value;
+    textClone.style.color = 'white'
+
+    outTemp.appendChild(promptClone);
+    outTemp.appendChild(textClone);
+    outElement.appendChild(outTemp);
+
+    var tempSpan;
+
+    try {
+        const result = Module.ccall(
+          "evaluate_with_error",
+          "string",
+          ["string"],
+          [inp.value]
+        );
+
+        tempSpan = document.createElement("span");
+
+        if (result.startsWith("error:")) {
+            tempSpan.textContent = `--> ${result.slice(7)}`;
+            tempSpan.className = "text-red-600 font-bold";
+        } 
+        else{
+            tempSpan.textContent = `--> ${result}`;
+        }
+
+        tempSpan.textContent = `--> ${result}`
+
+        outElement.appendChild(tempSpan);
+
+    } catch (e) {
+        tempSpan = document.createElement("span");
+        tempSpan.textContent = `--> ${e}`
+         
+        tempSpan.className = "text-red-600 font-bold";
+
+        outElement.appendChild(tempSpan);
+    }
+
+    inp.value = "";
+  }
+}
+
+
 document.addEventListener("DOMContentLoaded", (e) => {
   const mainDiv = document.getElementById("mainDiv");
   const camera = document.getElementById("camera");
   const settings = document.getElementById("settings");
   const terminal = document.getElementById("terminal");
+  const calcIcon = document.getElementById("calcIcon");
 
   const resume = document.getElementById("resumeIcon");
 
@@ -199,6 +274,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   settings.addEventListener("click", handleSettingsOpener);
   resume.addEventListener("click", handleResumeOpener);
   terminal.addEventListener("click", handleTerminalOpener);
+  calcIcon.addEventListener("click", handleCalcOpener);
 });
 
 const handleTerminalOpener = (e) => {
@@ -357,5 +433,49 @@ const handleSettingsOpener = (e) => {
   restWindow.appendChild(settingContent);
 
   windowEl.appendChild(restWindow);
+  document.body.appendChild(windowEl);
+};
+
+const handleCalcOpener = (e) => {
+  if (calcState.opened) return;
+  calcState.opened = true;
+
+  const windowEl = windowMaker("Calculator", calcState);
+  calcState.window = windowEl;
+
+
+  windowEl.addEventListener("mousedown", () => {
+    bringToFront(calcState, DOMState);
+  });
+
+  const innerWindow = document.createElement("div");
+  innerWindow.className =
+    "w-full h-full px-1 bg-black overflow-y-scroll";
+
+  const outputSection = document.createElement("div");
+  outputSection.className = "flex flex-col space-x-2 text-white";
+
+  const inputSection = document.createElement("div");
+  inputSection.className = "flex flex-row space-x-2";
+
+  const startText = document.createElement("span");
+  startText.innerText = ">> ";
+  startText.className = "font-bold text-blue-500";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "text-black outline-0 text-white";
+
+  input.addEventListener("keydown", (e) => {
+    handleCalcInput(e, inputSection, outputSection);
+  });
+
+  inputSection.appendChild(startText);
+  inputSection.appendChild(input);
+
+  innerWindow.appendChild(outputSection);
+  innerWindow.appendChild(inputSection);
+  windowEl.appendChild(innerWindow);
+
   document.body.appendChild(windowEl);
 };
