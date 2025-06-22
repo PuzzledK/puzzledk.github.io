@@ -10,7 +10,7 @@ export const DOMState = {
 };
 
 export const settingsNavItems = ["Wallpaper"];
-export const wallPaperOptions = ["1.png", "2.jpg", "3.jpeg"];
+export const wallPaperOptions = ["1.png", "2.jpg", "3.jpeg", "4.jpeg"];
 
 export const cameraState = {
   opened: false,
