@@ -28,7 +28,7 @@ export const handleSettingsOpener = (e) => {
   });
 
   const restWindow = document.createElement("div");
-  restWindow.className = "w-full h-full bg-white flex";
+  restWindow.className = "w-full h-full bg-white flex overflow-auto";
 
   const sideNav = document.createElement("div");
   sideNav.className =
@@ -48,25 +48,33 @@ export const handleSettingsOpener = (e) => {
   const wallpaperContent = document.createElement("div");
   wallpaperContent.id = "setting-content";
   wallpaperContent.className =
-    "flex flex-row flex-wrap w-full justify-center space-x-5 pt-5 px-5";
+    "flex flex-wrap justify-center gap-6 p-5 items-start";
 
   wallPaperOptions.map((elem) => {
     const wrapper = document.createElement("div");
     wrapper.className =
-      "relative w-full sm:w-[48%] md:w-[31%] aspect-video mb-6";
+    "relative w-[50%] sm:w-[30%] md:w-[20%] aspect-square";
 
+
+    // Foreground card
     const fgDiv = document.createElement("div");
     fgDiv.className =
-      "w-full h-full bg-white border-4 border-black flex items-center justify-center z-10 font-serif text-xl font-bold hover:translate-x-2 hover:translate-y-2 duration-150 cursor-pointer overflow-hidden relative";
+  "w-full h-full bg-white border-4 border-black z-10 relative cursor-pointer hover:translate-x-3 hover:translate-y-3 transition-transform duration-200 overflow-hidden";
+
 
     const img = document.createElement("img");
     img.src = `/assets/wallpapers/${elem}`;
     img.className = "w-full h-full object-cover";
+
     fgDiv.appendChild(img);
 
+    // Background black shadow
     const bgDiv = document.createElement("div");
-    bgDiv.className = "w-full h-full bg-black absolute top-2 left-2 z-0";
+    bgDiv.className =
+  "w-full h-full bg-black absolute top-3 left-3 z-0";
 
+
+    // On click
     fgDiv.addEventListener("click", (e) => {
       e.preventDefault();
       changeWallPaper(elem);
