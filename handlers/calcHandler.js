@@ -63,7 +63,6 @@ export const handleCalcOpener = (e) => {
   const windowEl = windowMaker("Calculator", calcState);
   calcState.window = windowEl;
 
-
   windowEl.addEventListener("mousedown", () => {
     bringToFront(calcState, DOMState);
   });
@@ -71,6 +70,27 @@ export const handleCalcOpener = (e) => {
   const innerWindow = document.createElement("div");
   innerWindow.className =
     "w-full h-full px-1 bg-black overflow-y-scroll";
+
+  const introSection = document.createElement("div");
+  introSection.className = 'w-full flex flex-col space-y-1 text-white items-center justify-center text-center';
+
+  const introH1 = document.createElement('h1');
+  introH1.textContent = "Welcome to The Calculator";
+
+  const introP = document.createElement('p');
+  introP.textContent = "This is a simple expression solver that I have made in C++ and compiled for the web using WASM. This is my attempt to dive into the world of compilers !!";
+
+  const introP2 = document.createElement('p');
+  introP2.textContent = "The source code to this project can be found at:  ";
+
+  const linkElem = document.createElement('a');
+  linkElem.className = 'text-blue-600'
+  linkElem.textContent = "https://github.com/PuzzledK/Math-Solver";
+  linkElem.href = "https://github.com/PuzzledK/Math-Solver";
+  linkElem.target = "_blank"; // opens in new tab
+  linkElem.rel = "noopener noreferrer"; // security best practice
+
+
 
   const outputSection = document.createElement("div");
   outputSection.className = "flex flex-col space-x-2 text-white";
@@ -90,9 +110,16 @@ export const handleCalcOpener = (e) => {
     handleCalcInput(e, inputSection, outputSection);
   });
 
+  introSection.appendChild(introH1);
+  introSection.appendChild(introP);
+  introSection.appendChild(introP2);
+  introP2.appendChild(linkElem);
+  introSection.appendChild(introP2);
+
   inputSection.appendChild(startText);
   inputSection.appendChild(input);
 
+  innerWindow.appendChild(introSection);
   innerWindow.appendChild(outputSection);
   innerWindow.appendChild(inputSection);
   windowEl.appendChild(innerWindow);
