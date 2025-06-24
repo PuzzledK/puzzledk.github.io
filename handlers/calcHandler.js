@@ -78,7 +78,7 @@ export const handleCalcOpener = (e) => {
   introH1.textContent = "Welcome to The Calculator";
 
   const introP = document.createElement('p');
-  introP.textContent = "This is an expression solver that I have made in C++ and compiled for the web using WASM. This is my attempt to dive into the world of compilers !!";
+  introP.textContent = "This is an expression solver that I have made in C++ and compiled for the web using WASM. This is my attempt to dive into the world of interpreters !!";
 
   const introP2 = document.createElement('p');
   introP2.textContent = "The source code to this project can be found at:  ";
