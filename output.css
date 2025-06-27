@@ -237,6 +237,9 @@
   .flex {
     display: flex;
   }
+  .table {
+    display: table;
+  }
   .aspect-square {
     aspect-ratio: 1 / 1;
   }

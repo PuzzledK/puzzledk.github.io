@@ -169,7 +169,7 @@ export const handleTerminalOpener = (e) => {
 
   const input = document.createElement("input");
   input.type = "text";
-  input.className = "text-black outline-0 text-white";
+  input.className = "text-black outline-0 text-white w-full";
 
   input.addEventListener("keydown", (e) => {
     handleTerminalInput(e, inputSection, outputSection);
