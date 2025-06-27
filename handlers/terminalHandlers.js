@@ -93,24 +93,44 @@ export const handleTerminalInput = (e, inputElement, outElement) => {
         if (command.length != 2) {
           tempSpan.textContent = "Invalid Syntax";
           tempSpan.className = "text-red-600 font-bold";
-        } 
-        else {
+        } else {
           const site = command[1];
+
+          const normalizeUrl = (url) => {
+            if (!url.match(/^https?:\/\//)) {
+              url = "https://" + url;
+            }
+            try {
+              return new URL(url).toString(); 
+            } catch (e) {
+              return null; 
+            }
+          };
+
+          const normalizedUrl = normalizeUrl(site);
+          if (!normalizedUrl) {
+            tempSpan.textContent = `Invalid URL: ${site}`;
+            tempSpan.className = "text-red-600 font-bold";
+            return;
+          }
+
           const fetchFunc = async () => {
             try {
               const start = Date.now();
-              const res = await fetch(site, { method: "GET" });
-
-              if (!res.ok) {
-                tempSpan.textContent = "Site returned HTTP : " + res.status;
-                tempSpan.className = "text-red-600 font-bold";
-                return;
-              }
+              const res = await fetch(normalizedUrl, {
+                method: "HEAD", 
+                mode: "no-cors", 
+                cache: "no-store", 
+                headers: {
+                  "User-Agent": "Mozilla/5.0",
+                },
+              });
 
               const latency = Date.now() - start;
-              tempSpan.textContent = `pinged ${site}, Latency: ${latency}ms`;
+
+              tempSpan.textContent = `Pinged ${normalizedUrl}, Latency: ${latency}ms`;
             } catch (e) {
-              tempSpan.textContent = `Failed to ping ${site}: ${e.message}`;
+              tempSpan.textContent = `Failed to ping ${normalizedUrl}: ${e.message}`;
               tempSpan.className = "text-red-600 font-bold";
             }
           };
