@@ -161,7 +161,7 @@ export const handleTerminalOpener = (e) => {
   outputSection.className = "flex flex-col space-x-2 text-white";
 
   const inputSection = document.createElement("div");
-  inputSection.className = "flex flex-row space-x-2";
+  inputSection.className = "flex flex-row space-x-2 w-full";
 
   const startText = document.createElement("span");
   startText.innerText = "root@webOS :  ";
@@ -169,7 +169,7 @@ export const handleTerminalOpener = (e) => {
 
   const input = document.createElement("input");
   input.type = "text";
-  input.className = "text-black outline-0 text-white";
+  input.className = "text-black outline-0 text-white w-3/4";
 
   input.addEventListener("keydown", (e) => {
     handleTerminalInput(e, inputSection, outputSection);
