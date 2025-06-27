@@ -74,6 +74,7 @@ export const commands = {
   clear: "Clear the terminal",
   help: "Show list of available commands",
   neofetch: "Show system information",
+  ping: "Ping a website"
 };
 
 document.addEventListener("DOMContentLoaded", (e) => {

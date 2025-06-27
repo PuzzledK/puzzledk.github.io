@@ -87,8 +87,8 @@ export const handleCalcOpener = (e) => {
   linkElem.className = 'text-blue-600'
   linkElem.textContent = "https://github.com/PuzzledK/Math-Solver";
   linkElem.href = "https://github.com/PuzzledK/Math-Solver";
-  linkElem.target = "_blank"; // opens in new tab
-  linkElem.rel = "noopener noreferrer"; // security best practice
+  linkElem.target = "_blank"; 
+  linkElem.rel = "noopener noreferrer"; 
 
 
 
