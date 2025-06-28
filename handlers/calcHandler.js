@@ -1,7 +1,7 @@
 import windowMaker,{bringToFront} from "./windowHandlers";
 import { calcState,DOMState } from "../main";
 
-function handleCalcInput(e,inputElement,outElement) {
+function handleCalcInput(e, inputElement, outElement) {
   const inpText = inputElement.querySelector("span");
   const inp = inputElement.querySelector("input");
 
@@ -21,6 +21,62 @@ function handleCalcInput(e,inputElement,outElement) {
 
     var tempSpan;
 
+    // HELP COMMAND
+    if (inp.value.trim().toLowerCase() === "help") {
+      const helpDiv = document.createElement("div");
+      helpDiv.style.whiteSpace = "pre-line";
+      helpDiv.style.color = "#aaf";
+      helpDiv.textContent = `
+Supported commands and features:
+
+Operators:
+  +   Addition
+  -   Subtraction
+  *   Multiplication
+  /   Division
+  ^   Exponentiation
+  ( ) Parentheses
+  e   Euler's number
+
+Functions (input/output in degrees where applicable):
+  sin(x), cos(x), tan(x)
+  asin(x), acos(x), atan(x)
+  sqrt(x), log(x) [base 10], ln(x) [base e]
+
+Variables:
+  Assignment: x = 5
+  Usage: x + 2
+  Variable names: alphabets only (e.g., foo, bar)
+
+Blocks:
+  { ... } to group multiple expressions/statements, separated by semicolons
+
+If-Then-Else Expressions:
+  if(<condition>) then <expr> else <expr>
+  Supported: ==, !=, >, <, >=, <=
+
+User-defined functions:
+  def f(x, y) { x + y; }   or   def sq(x) x^2
+  f(2, 3)
+
+Commands:
+  help   Show this help message
+
+Numbers:
+  Integer and floating-point numbers (e.g., 42, 3.14)
+
+Type an expression like: sin(30) + cos(60), x = 2, def sq(x) x^2, or use blocks and if-then-else.
+      `.trim();
+      outElement.appendChild(helpDiv);
+      inp.value = "";
+      return;
+    }
+    else if(inp.value.trim().toLowerCase() === "clear"){
+      outElement.innerHTML = "";
+      inp.value = "";
+      return;
+    }
+
     try {
         const result = Module.ccall(
           "evaluate_with_error",
@@ -36,19 +92,17 @@ function handleCalcInput(e,inputElement,outElement) {
             tempSpan.className = "text-red-600 font-bold";
         } 
         else{
+            if(result != ""){
             tempSpan.textContent = `--> ${result}`;
+            }
         }
-
-        tempSpan.textContent = `--> ${result}`
 
         outElement.appendChild(tempSpan);
 
     } catch (e) {
         tempSpan = document.createElement("span");
         tempSpan.textContent = `--> Invalid Syntax or Unsupported Command / Function`
-         
         tempSpan.className = "text-red-600 font-bold";
-
         outElement.appendChild(tempSpan);
     }
 
