@@ -26,7 +26,7 @@ export const handleResumeOpener = (e) => {
         <div class="mb-6">
             <h2 class="text-2xl font-semibold text-gray-800 border-b-2 border-gray-300 pb-1 mb-4">PROFILE</h2>
             <p class="mb-2">
-                An aspiring Web Developer with a constant urge to improve at every stage of life and a very keen interest in new technologies.
+                An aspiring Software Developer with a constant urge to improve at every stage of life and a very keen interest in new technologies.
             </p>
             <p>
                 Passionate about full-stack development and problem-solving. Strong foundation in core computer science concepts and a fast learner when it comes to emerging tools and frameworks.
