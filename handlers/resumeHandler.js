@@ -94,7 +94,7 @@ export const handleResumeOpener = (e) => {
                 <h3 class="text-lg font-semibold text-gray-900">Chat-Application <span class="font-normal text-gray-600">| C, Sockets</span></h3>
                 <p class="mb-1">A terminal-based chat application using TCP/IP socket programming in C.</p>
                 <p class="mb-1">Supports multiple client-server messaging through basic threading model. Provides foundation to explore network programming and concurrent communication.</p>
-                <p class="mb-1">Supports variables, function declarations, if-then-else control flow, and local scopes. Intended as a hands-on learning tool for compiler/interpreter design.</p>
+                <p class="mb-1">Provides foundation to explore network programming and concurrent communication.</p>
                 <p class="text-md text-blue-600 hover:underline"><a href="https://github.com/PuzzledK/Chat-application-in-C-sockets" target="_blank" rel="noopener noreferrer">GitHub: github.com/PuzzledK/Chat-application-in-C-sockets</a></p>
             </div>
         </div>
