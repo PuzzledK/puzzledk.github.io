@@ -41,7 +41,7 @@
             <div class="mb-4">
                 <div class="flex justify-between items-baseline">
                     <h3 class="text-lg font-semibold text-gray-900">Thapar Institute of Engineering and Technology, Patiala, Punjab</h3>
-                    <span class="text-md text-gray-600">Aug 2022 Present</span>
+                    <span class="text-md text-gray-600">Aug 2022 - Present</span>
                 </div>
                 <p class="text-md text-gray-700">Bachelor of Computer Engineering</p>
                 <p class="text-md text-gray-700">GPA: 9.04 (Current)</p>
@@ -50,7 +50,7 @@
             <div class="mb-4">
                 <div class="flex justify-between items-baseline">
                     <h3 class="text-lg font-semibold text-gray-900">Mayur Nobles Academy, Barmer, Rajasthan</h3>
-                    <span class="text-md text-gray-600">May 2020 May 2022</span>
+                    <span class="text-md text-gray-600">May 2020 - May 2022</span>
                 </div>
                 <p class="text-md text-gray-700">Senior Secondary (XII)</p>
                 <p class="text-md text-gray-700">Score: 97.33%</p>
@@ -59,7 +59,7 @@
             <div>
                 <div class="flex justify-between items-baseline">
                     <h3 class="text-lg font-semibold text-gray-900">Tiny Tots Sr. Sec. School, Barmer, Rajasthan</h3>
-                    <span class="text-md text-gray-600">May 2007 May 2019</span>
+                    <span class="text-md text-gray-600">May 2007 - May 2019</span>
                 </div>
                 <p class="text-md text-gray-700">Secondary (X)</p>
                 <p class="text-md text-gray-700">Score: 87.5%</p>
