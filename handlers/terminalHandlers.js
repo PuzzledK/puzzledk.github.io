@@ -50,12 +50,13 @@ export const handleTerminalInput = (e, inputElement, outElement) => {
 
     outTemp.appendChild(promptClone);
     outTemp.appendChild(textClone);
-    outElement.appendChild(outTemp);
+    
 
     const command = inp.value.split(" ");
     var tempSpan;
     switch (command[0]) {
       case "neofetch":
+        outElement.appendChild(outTemp);
         tempSpan = document.createElement("span");
 
         const container = document.createElement("div");
@@ -76,6 +77,7 @@ export const handleTerminalInput = (e, inputElement, outElement) => {
         outElement.appendChild(tempSpan);
         break;
       case "help":
+        outElement.appendChild(outTemp);
         tempSpan = document.createElement("span");
         for (const command in commands) {
           tempSpan.innerHTML += `${command} - ${commands[command]}<br>`;
@@ -137,7 +139,7 @@ export const handleTerminalInput = (e, inputElement, outElement) => {
 
           fetchFunc();
         }
-
+        outElement.appendChild(outTemp);
         outElement.appendChild(tempSpan);
         break;
 
